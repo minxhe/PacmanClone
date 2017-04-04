@@ -3,6 +3,12 @@ package Pacman;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import GameEngine.Game;
 import GameEngine.GameApplicaiton;
@@ -86,7 +92,10 @@ public class Pacman extends Game{
 		
 		//draw ghost
 		for(int i = 0; i < 4; i++){
-			if(data.ghosts[i].edibleTimer == 0){
+			if(data.ghosts[i].resetting){
+				drawer.draw(g, "reset", 0, data.ghosts[i].pos.column*2, data.ghosts[i].pos.row*2, true);
+			}
+			else if(data.ghosts[i].edibleTimer == 0){
 				drawer.draw(g, "ghosts", i, data.ghosts[i].curDir+frame%2 ,data.ghosts[i].pos.column*2, data.ghosts[i].pos.row*2, true);
 			}else{
 				drawer.draw(g, "edibleghosts", frame%2,  data.ghosts[i].pos.column*2,  data.ghosts[i].pos.row*2, true);
@@ -101,7 +110,7 @@ public class Pacman extends Game{
 		
 		
 		//draw score
-		drawer.draw(g, "score", 0, 10, 510, false);
+		drawer.draw(g, "score", 0, 275, 510, false);
 		String score = ""+data.score;
 		for(int i = 0; i < score.length(); i++){
 			char c = score.charAt(score.length()-1-i);
@@ -112,6 +121,18 @@ public class Pacman extends Game{
 			g.setColor(new Color(100,100,100,200));
 			g.fillRect(0, 0, width, height);
 			drawer.draw(g, "over", 0, width/2, height/2-50, true);
+		}
+		
+		//draw lives
+		BufferedImage heart;
+		try {
+			heart = ImageIO.read(new File("images/heart.png"));
+			for(int i = 0; i < data.numLives; i ++){
+				g.drawImage(heart, 10 + i*30, 501, 35, 33, null);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 	}

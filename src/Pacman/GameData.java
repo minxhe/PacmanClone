@@ -14,10 +14,11 @@ public class GameData {
 	Maze maze;
 	public MoverInfo pacman;
 	public boolean dead = false;
+	public int numLives;
 	
 	public GameData(){
 		maze = new Maze();
-
+		numLives = 3;
 		setMaze();
 	}
 	
@@ -91,10 +92,6 @@ public class GameData {
 					ghost.edibleTimer = 0;
 					
 					resetGhost(ghost, maze.ghostPos.column, maze.ghostPos.row);
-//					ghost.pos.column = maze.ghostPos.column;
-//					ghost.pos.row = maze.ghostPos.row;
-//					ghost.curDir = MoverInfo.UP;
-					
 				}
 				if(ghost.edibleTimer != 0){
 					ghost.edibleTimer--;
@@ -103,9 +100,18 @@ public class GameData {
 			else if(ghost.resetting){
 				resetGhost(ghost, maze.ghostPos.column, maze.ghostPos.row);
 			}
+			
+			//IN PROGRESS I DONT KNOW WHY THE FK IT DOESNT WORK
 			else if(ghost.edibleTimer == 0 && isTouching(pacman.pos, ghost.pos) && !ghost.resetting){
-				//dead
+				numLives--;
 				dead = true;
+//				if(numLives == 0){
+//					dead = true;
+//				}
+				
+				//pacman.pos = maze.pacmanPos;
+				//ghost.pos = maze.ghostPos;
+				//ghost.curDir = MoverInfo.UP;
 			}
 		}
 	}

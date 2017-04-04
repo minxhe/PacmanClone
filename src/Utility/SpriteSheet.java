@@ -3,6 +3,7 @@ package Utility;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -46,11 +47,24 @@ public class SpriteSheet {
 	}
 	
 	public void draw(Graphics g, String name, int index, int x, int y, boolean centered) {
-		Region r = getSprite(name).getRegion(index);
-		if (centered) {
-			g.drawImage(image.getSubimage(r.x, r.y, r.w, r.h), x-r.w/2, y-r.h/2, null);
-		} else {
-			g.drawImage(image.getSubimage(r.x, r.y, r.w, r.h), x, y, null);
+		if(name == "reset"){
+			BufferedImage resetGhost;
+			try {
+				resetGhost = ImageIO.read(new File("images/resetGhost.png"));
+				g.drawImage(resetGhost, x - 12, y - 14, null);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}else{
+			Region r = getSprite(name).getRegion(index);
+			if (centered) {
+				g.drawImage(image.getSubimage(r.x, r.y, r.w, r.h), x-r.w/2, y-r.h/2, null);
+			} else {
+				g.drawImage(image.getSubimage(r.x, r.y, r.w, r.h), x, y, null);
+			}
 		}
+		
 	}
 }
